@@ -15,6 +15,7 @@
 #include "fusion_pass.h"
 #include "fusion_adddiv.h"
 #include "compiler.h"
+#include "topt_compiler.h"
 
 namespace py = pybind11;
 using namespace torch;
@@ -51,12 +52,7 @@ void register_opt()
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
     register_opt();
-    m.def(
-        "enable",
-        []()
-        {
-            opt_enabled = true;
-        });
-    m.def("disable", []()
-          { opt_enabled = false; });
+    m.def("enable",[](){opt_enabled = true;});
+    m.def("disable", [](){ opt_enabled = false; });
+    m.def("topt_compile", &topt_compile, "topt_compile");
 }
